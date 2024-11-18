@@ -8,6 +8,8 @@ const App = () => {
     status: "draft",
   });
   const [articles, setArticles] = useState([]);
+  const [editingIndex, setEditingIndex] = useState(null);
+  const [editingTitle, setEditingTitle] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -23,6 +25,20 @@ const App = () => {
 
   const handleDelete = (index) => {
     setArticles(articles.filter((_, i) => i !== index));
+  };
+
+  const handleEdit = (index) => {
+    setEditingIndex(index);
+    setEditingTitle(articles[index].title);
+  };
+
+  const handleSaveEdit = (index) => {
+    const updatedArticles = articles.map((article, i) =>
+      i === index ? { ...article, title: editingTitle } : article
+    );
+    setArticles(updatedArticles);
+    setEditingIndex(null);
+    setEditingTitle("");
   };
 
   return (
@@ -53,7 +69,22 @@ const App = () => {
         {articles.map((article, index) => (
           <li key={index}>
             <div>
-              <strong>{article.title}</strong> - {article.author} ({article.status})
+              {editingIndex === index ? (
+                <>
+                  <input
+                    type="text"
+                    value={editingTitle}
+                    onChange={(e) => setEditingTitle(e.target.value)}
+                    placeholder="Modifica il titolo"
+                  />
+                  <button onClick={() => handleSaveEdit(index)}>Salva</button>
+                </>
+              ) : (
+                <>
+                  <strong>{article.title}</strong> - {article.author} ({article.status})
+                  <button onClick={() => handleEdit(index)}>✏️</button>
+                </>
+              )}
             </div>
             <button className="delete" onClick={() => handleDelete(index)}>
               🗑️

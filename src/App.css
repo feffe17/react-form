@@ -76,6 +76,16 @@ ul li div {
   margin-bottom: 5px;
 }
 
+ul li div input {
+  padding: 5px;
+  font-size: 14px;
+  margin-right: 10px;
+  width: auto;
+}
+
+ul li div button {
+  margin-left: 2rem;
+}
 
 button.delete {
   background-color: red;
